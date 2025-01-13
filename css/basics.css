@@ -1,0 +1,37 @@
+label, select, input{
+    width: 150px;
+    display: inline-block;
+    margin: 5px 0;
+}
+
+body {
+    background-color: azure;
+}
+
+table.hiking {
+    text-align: end;
+    border-collapse: collapse;
+
+    th, td {
+        padding: 0.2rem;
+        border: 1px solid;  
+    }
+
+    th {
+        background-color: bisque;
+    }
+
+    td {
+        background-color: beige;
+    }
+}
+
+form {
+    background-color: bisque;
+    width: fit-content;
+    padding: 1rem;
+}
+
+select, option, input {
+    background-color: beige;
+}
