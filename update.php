@@ -44,12 +44,12 @@
 	<form action="" method="post">
 		<div>
 			<label for="name">Name</label>
-			<input type="text" name="name" value="<?php echo $hike['name'];?>"/>
+			<input type="text" name="name" value="<?php echo $hike['name'];?>" required/>
 		</div>
 
 		<div>
 			<label for="difficulty">Difficulté</label>
-			<select name="difficulty">
+			<select name="difficulty" required>
 				<?php 
 					$difficulties = array('très facile', 'facile', 'moyen', 'difficile', 'très difficile');
 					$selected = $hike['difficulty'];
@@ -68,15 +68,15 @@
 		
 		<div>
 			<label for="distance">Distance</label>
-			<input type="text" name="distance" value="<?php echo $hike['distance'];?>">
+			<input type="text" name="distance" value="<?php echo $hike['distance'];?>" required/>
 		</div>
 		<div>
 			<label for="duration">Durée</label>
-			<input type="duration" name="duration" value="<?php echo $hike['duration'];?>">
+			<input type="duration" name="duration" value="<?php echo $hike['duration'];?>" required/>
 		</div>
 		<div>
 			<label for="height_difference">Dénivelé</label>
-			<input type="text" name="height_difference" value="<?php echo $hike['height_difference'];?>">
+			<input type="text" name="height_difference" value="<?php echo $hike['height_difference'];?>" required/>
 		</div>
 		<input type="hidden" name="id" value="<?php echo $hike['id'];?>">
 		<button type="submit" name="button">Envoyer</button>
