@@ -1,3 +1,28 @@
+<?php
+	function setHike(PDO $connexion) {
+		if (!isset($_POST['name']) || !isset($_POST['difficulty']) || !isset($_POST['distance']) || !isset($_POST['duration']) || !isset($_POST['height_difference'])) {
+			return;
+		}
+
+		['name' => $name, 'difficulty' => $difficulty, 'distance' => $distance, 'duration' => $duration, 'height_difference' => $height_difference] = $_POST;
+		$connexion->query("INSERT INTO hiking (name, difficulty, distance, duration, height_difference) VALUES ('$name', '$difficulty', '$distance', '$duration', '$height_difference')");
+		echo '<p style="color:green;">Nouvelle randonée créée avec succès !</p>';
+	}
+
+	try {
+		include 'database/connect.php';
+		$connexion = connectToDatabase();
+	} catch(Exception $exception) {
+		die('<p style="color:red;">'.$exception->getMessage().'</p>');
+	}
+
+	try {
+		setHike($connexion);
+	} catch(PDOException $exception) {
+		echo '<p style="color:red;">'.$exception->getMessage().'</p>';
+	}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,23 +64,3 @@
 	</form>
 </body>
 </html>
-
-<?php
-	function setHike(PDO $connexion) {
-		['name' => $name, 'difficulty' => $difficulty, 'distance' => $distance, 'duration' => $duration, 'height_difference' => $height_difference] = $_POST;
-		$connexion->query("INSERT INTO hiking (name, difficulty, distance, duration, height_difference) VALUES ('$name', '$difficulty', '$distance', '$duration', '$height_difference')");
-		echo '<p style="color:green;">Nouvelle randonée créée avec succès !</p>';
-	}
-	
-	if (!isset($_POST['name']) || !isset($_POST['difficulty']) || !isset($_POST['distance']) || !isset($_POST['duration']) || !isset($_POST['height_difference'])) {
-		die();
-	}
-
-	try {
-		include 'database/connect.php';
-		$connexion = connectToDatabase();
-		setHike($connexion);
-	} catch(Exception $exception) {
-		echo '<p style="color:red;">' . $exception->getMessage() . '</p>';
-	}
-?>

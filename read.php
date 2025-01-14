@@ -7,7 +7,6 @@
     </head>
     <body>
         <h1>Liste des randonnées</h1>
-        <table class="hiking">
             <?php
                 function setHeader(array $data) {
                     $header = '<tr>';
@@ -38,7 +37,7 @@
                         $content .= "<td>$duration</td>";
                         $content .= "<td>$height_difference</td>";
 
-                        $url = "update.php?id=$id&name=$name&difficulty=$difficulty&distance=$distance&duration=$duration&height_difference=$height_difference";
+                        $url = "update.php?id=$id";
                         $content .= '<td><a href="'.$url.'">change</a></td>';
                         $content .= '</tr>';
                     }
@@ -49,8 +48,10 @@
                     include 'database/connect.php';
                     $connexion = connectToDatabase();
                     $data = $connexion->query('SELECT * FROM '.getTableName())->fetchAll(PDO::FETCH_ASSOC);
+                    echo '<table class="hiking">';
                     setHeader($data);
                     setContent($data);
+                    echo '</table>';
                 } catch(Exception $exception) {
                     echo '<p style="color:red;">' . $exception->getMessage() . '</p>';
                 }   
