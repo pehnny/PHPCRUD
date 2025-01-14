@@ -5,7 +5,7 @@
 		}
 
 		['id' => $id, 'name' => $name, 'difficulty' => $difficulty, 'distance' => $distance, 'duration' => $duration, 'height_difference' => $height_difference] = $_POST;
-		$connexion->query("UPDATE hiking SET name = '$name', difficulty = '$difficulty', distance = '$distance', duration = '$duration', height_difference = '$height_difference' WHERE id = '$id'");
+		$connexion->query('UPDATE '.getTableName()." SET name = '$name', difficulty = '$difficulty', distance = '$distance', duration = '$duration', height_difference = '$height_difference' WHERE id = '$id'");
 		echo '<p style="color:green;">Randonnée mise à jour avec succès !</p>';
 	}
 

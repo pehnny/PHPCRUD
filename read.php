@@ -1,3 +1,14 @@
+<?php
+    try {
+        include 'database/connect.php';
+        $connexion = connectToDatabase();
+        $query = $connexion->query('SELECT * FROM '.getTableName());
+        $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    } catch(Exception $exception) {
+        die('<p style="color:red;">'.$exception->getMessage().'</p>');
+    }   
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,47 +24,39 @@
                     foreach (array_keys($data[0]) as $title) {
                         $header .= "<th>$title</th>";
                     }
-                    $header .= '<th>update</th>';
+                    $header .= <<<END
+                        <th>update</th>
+                        <th>delete</th>
+                    END;
                     $header .= '</tr>';
                     echo $header;
                 }
 
-                function setContent(array $data) {
+                function setData(array $data) {
                     $content = '';
                     foreach ($data as $row) {
+                        $updateURL = "update.php?id={$row['id']}";
+                        $deleteURL = "delete.php?id={$row['id']}";
                         $content .= '<tr>';
-
-                        $id = $row['id'];
-                        $name = $row['name'];
-                        $difficulty = $row['difficulty'];
-                        $distance = $row['distance'];
-                        $duration = $row['duration'];
-                        $height_difference = $row['height_difference'];
-
-                        $content .= "<td>$id</td>";
-                        $content .= "<td>$name</td>";
-                        $content .= "<td>$difficulty</td>";
-                        $content .= "<td>$distance</td>";
-                        $content .= "<td>$duration</td>";
-                        $content .= "<td>$height_difference</td>";
-
-                        $url = "update.php?id=$id";
-                        $content .= '<td><a href="'.$url.'">change</a></td>';
+                        foreach ($row as $element) {
+                            $content .= "<td>$element</td>";
+                        }
+                        $content .= <<<END
+                            <td><a href="$updateURL">change</a></td>
+                            <td><a href="$deleteURL">X</a></td>
+                        END;
                         $content .= '</tr>';
                     }
                     echo $content;
                 }
 
                 try {
-                    include 'database/connect.php';
-                    $connexion = connectToDatabase();
-                    $data = $connexion->query('SELECT * FROM '.getTableName())->fetchAll(PDO::FETCH_ASSOC);
                     echo '<table class="hiking">';
                     setHeader($data);
-                    setContent($data);
+                    setData($data);
                     echo '</table>';
                 } catch(Exception $exception) {
-                    echo '<p style="color:red;">' . $exception->getMessage() . '</p>';
+                    echo '<p style="color:red;">'.$exception->getMessage().'</p>';
                 }   
             ?>
         </table>

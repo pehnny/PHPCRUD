@@ -5,7 +5,7 @@
 		}
 
 		['name' => $name, 'difficulty' => $difficulty, 'distance' => $distance, 'duration' => $duration, 'height_difference' => $height_difference] = $_POST;
-		$connexion->query("INSERT INTO hiking (name, difficulty, distance, duration, height_difference) VALUES ('$name', '$difficulty', '$distance', '$duration', '$height_difference')");
+		$connexion->query('INSERT INTO '.getTableName()." (name, difficulty, distance, duration, height_difference) VALUES ('$name', '$difficulty', '$distance', '$duration', '$height_difference')");
 		echo '<p style="color:green;">Nouvelle randonée créée avec succès !</p>';
 	}
 
