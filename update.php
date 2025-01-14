@@ -1,22 +1,3 @@
-<?php
-	try {
-		include 'database/connect.php';
-		$connexion = connectToDatabase();
-		updateHike($connexion);
-	} catch(Exception $exception) {
-		echo '<p style="color:red;">' . $exception->getMessage() . '</p>';
-	}
-
-	function updateHike(PDO $connexion) {
-		if (!isset($_GET['id']) || !isset($_GET['name']) || !isset($_GET['difficulty']) || !isset($_GET['distance']) || !isset($_GET['duration']) || !isset($_GET['height_difference'])) {
-			return;
-		}
-		// ['name' => $name, 'difficulty' => $difficulty, 'distance' => $distance, 'duration' => $duration, 'height_difference' => $height_difference] = $_GET;
-		// $connexion->query("INSERT INTO hiking (name, difficulty, distance, duration, height_difference) VALUES ('$name', '$difficulty', '$distance', '$duration', '$height_difference')");
-		// echo '<p style="color:green;">Nouvelle randonée créée avec succès !</p>';
-	}
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,17 +18,18 @@
 			<label for="difficulty">Difficulté</label>
 			<select name="difficulty">
 				<?php 
-				$difficulties = array('très facile', 'facile', 'moyen', 'difficile', 'très difficile');
-				$selected = $_GET['difficulty'];
+					$difficulties = array('très facile', 'facile', 'moyen', 'difficile', 'très difficile');
+					$selected = $_GET['difficulty'];
 
-				foreach ($difficulties as $difficulty) {
-					if ($difficulty == $selected) {
-						$options .= "<option value=".$difficulty." selected>".ucfirst($difficulty)."</option>";
-						continue;
+					foreach ($difficulties as $difficulty) {
+						echo $difficulty;
+						if ($difficulty == $selected) {
+							$options .= "<option value='$difficulty' selected>".ucfirst($difficulty)."</option>";
+							continue;
+						}
+						$options .= "<option value='$difficulty'>".ucfirst($difficulty)."</option>";
 					}
-					$options .= "<option value=".$difficulty.">".ucfirst($difficulty)."</option>";
-				}
-				echo $options
+					echo $options
 				?>
 			</select>
 		</div>
@@ -64,7 +46,29 @@
 			<label for="height_difference">Dénivelé</label>
 			<input type="text" name="height_difference" value="<?php echo $_GET['height_difference'];?>">
 		</div>
+		<input type="hidden" name="id" value="<?php echo $_GET['id'];?>">
 		<button type="submit" name="button">Envoyer</button>
 	</form>
 </body>
 </html>
+
+<?php
+	function updateHike(PDO $connexion) {
+		['id' => $id, 'name' => $name, 'difficulty' => $difficulty, 'distance' => $distance, 'duration' => $duration, 'height_difference' => $height_difference] = $_POST;
+		echo $_POST['difficulty'];
+		$connexion->query("UPDATE hiking SET name = '$name', difficulty = '$difficulty', distance = '$distance', duration = '$duration', height_difference = '$height_difference' WHERE id = '$id'");
+		echo '<p style="color:green;">Randonnée mise à jour avec succès !</p>';
+	}
+
+	if (!isset($_POST['id']) || !isset($_POST['name']) || !isset($_POST['difficulty']) || !isset($_POST['distance']) || !isset($_POST['duration']) || !isset($_POST['height_difference'])) {			
+		die();
+	}
+
+	try {
+		include 'database/connect.php';
+		$connexion = connectToDatabase();
+		updateHike($connexion);
+	} catch(Exception $exception) {
+		echo '<p style="color:red;">' . $exception->getMessage() . '</p>';
+	}
+?>
